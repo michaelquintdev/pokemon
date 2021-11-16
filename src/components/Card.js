@@ -1,9 +1,11 @@
 import axios from 'axios'
 import React, {useEffect, useState} from 'react'
+import Expanded from './Expanded'
 
 function Card(props) {
     const [poke, setPoke] = useState([])
     const [loading, setLoading] = useState(true)
+    const [collapse, setCollapse] = useState(true)
 
     useEffect(() => {
         axios.get(props.pokemon.url)
@@ -17,31 +19,22 @@ function Card(props) {
             })
     }, [])
 
+    const collapseDiv = (e) => {
+        setCollapse(!collapse)
+    }
+
     return (
         <div>
             {loading 
-                ? <h3>Getting Pokemon</h3> 
+                ? <h3>Getting Pokemon: {props.pokemon.name}</h3> 
                 : <div>
                     <h2>{poke.name}</h2>
                     {poke.types.map((type,idx) => {
                         return <p>{type.type.name}</p>
                     })}
-                    <div>
-                        <div>
-                            <h4>Abilities</h4>
-                            {poke.abilities.map((ability, idx) => {
-                                return <p>{ability.ability.name}, </p>
-                            })}
-                        </div>
-                        <div>
-                            <h4>Stats</h4>
-                            {poke.stats.map((stat, idx) => {
-                                return (
-                                    <p key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</p>
-                                )
-                            })}
-                        </div>
-                    </div>
+                    {collapse ? <button onClick={collapseDiv}>+</button> 
+                    : <div><Expanded poke={poke}/> 
+                    <button onClick={collapseDiv}>-</button></div>}
                 </div>
             }
         </div>
