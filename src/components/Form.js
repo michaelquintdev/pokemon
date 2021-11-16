@@ -8,7 +8,8 @@ function Form() {
     const [errors, setErrors] = useState('')
 
     const onChange = (e) => {
-        setInput(e.target.value)
+        const text = e.target.value.trim().toLowerCase()
+        setInput(text)
     }
 
     const onSubmit = (e) => {
