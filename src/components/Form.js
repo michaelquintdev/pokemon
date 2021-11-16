@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import axios from 'axios'
-import Card from './Card'
 
 function Form() {
     const [input, setInput] = useState('')
@@ -38,7 +37,28 @@ function Form() {
                 <button>Submit</button>
             </form>
             {loading && <p>loading pokemon...</p>}
-            {pokemon.name && <h2>{pokemon.name}</h2>}
+            {pokemon.name && 
+                <div>
+                    <h2>{pokemon.name}</h2>
+                    {pokemon.types.map((type,idx) => {
+                        return <p key={idx}>{type.type.name}</p>
+                    })}
+                    <p>Base XP: {pokemon.base_experience}</p>
+                    <div>
+                        <h4>Abilities</h4>
+                        {pokemon.abilities.map((ability, idx) => {
+                            return <p key={idx}>{ability.ability.name}, </p>
+                        })}
+                    </div>
+                    <div>
+                        <h4>Stats</h4>
+                        {pokemon.stats.map((stat, idx) => {
+                            return (
+                                <p key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</p>
+                            )
+                        })}
+                    </div>
+                </div>}
             {errors.length > 0 && <p>{errors}</p>}
         </div>
     )
