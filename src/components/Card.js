@@ -30,7 +30,7 @@ function Card(props) {
                 : <div>
                     <h2>{poke.name}</h2>
                     {poke.types.map((type,idx) => {
-                        return <p>{type.type.name}</p>
+                        return <p key={idx}>{type.type.name}</p>
                     })}
                     {collapse ? <button onClick={collapseDiv}>+</button> 
                     : <div><Expanded poke={poke}/> 
