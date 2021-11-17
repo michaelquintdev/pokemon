@@ -1,19 +1,20 @@
 import React from 'react'
+import {CardAbilitiesDiv, CardAbilitiesP, CardStatsP, CardH4} from '../utils/styled'
 
 function Expanded({poke}) {
     return (
         <div>
-            <div>
-                <h4>Abilities</h4>
+            <CardAbilitiesDiv>
+                <CardH4>Abilities -</CardH4>
                 {poke.abilities.map((ability, idx) => {
-                    return <p key={idx}>{ability.ability.name}, </p>
+                    return <CardAbilitiesP key={idx}>{ability.ability.name}</CardAbilitiesP>
                 })}
-            </div>
+            </CardAbilitiesDiv>
             <div>
-                <h4>Stats</h4>
+                <CardH4>Stats</CardH4>
                 {poke.stats.map((stat, idx) => {
                     return (
-                        <p key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</p>
+                        <CardStatsP key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</CardStatsP>
                     )
                 })}
             </div>

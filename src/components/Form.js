@@ -1,5 +1,29 @@
 import React, {useState} from 'react'
 import axios from 'axios'
+import styled from 'styled-components';
+import {CardDiv, CardTitle, CardTitleP, CardAbilitiesDiv, CardAbilitiesP, CardStatsP, CardH2, CardH4, Button, Loading, Error} from '../utils/styled'
+
+const FormDiv = styled.div`
+    display: flex;
+    justify-content: center;
+`
+const NewForm = styled.form`
+    size: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`
+const Label = styled.label`
+    display: flex;
+    align-items: center;
+`
+const Input = styled.input`
+    padding: 2%;
+`
+const Section = styled.section`
+    display: flex;
+    justify-content: center;
+`
 
 function Form() {
     const [input, setInput] = useState('')
@@ -21,6 +45,7 @@ function Form() {
             .then(res => {
                 setPokemon(res.data)
                 setLoading(false)
+                setErrors('')
             }).catch(error => {
                 setErrors(error.response.data)
                 setLoading(false)
@@ -28,40 +53,45 @@ function Form() {
     }
 
     return (
-        <div>
-            <form onSubmit={onSubmit}>
-                <label>Type a pokemon: 
-                    <input 
-                        onChange={onChange}
-                    />
-                </label>
-                <button>Submit</button>
-            </form>
-            {loading && <p>loading pokemon...</p>}
+        <>
+            <FormDiv>
+                <NewForm onSubmit={onSubmit}>
+                    <Label>Type a pokemon: 
+                        <Input 
+                            onChange={onChange}
+                        />
+                    </Label>
+                    <Button>Submit</Button>
+                </NewForm>
+            </FormDiv>
             {pokemon.name && 
-                <div>
-                    <h2>{pokemon.name}</h2>
-                    {pokemon.types.map((type,idx) => {
-                        return <p key={idx}>{type.type.name}</p>
-                    })}
-                    <p>Base XP: {pokemon.base_experience}</p>
-                    <div>
-                        <h4>Abilities</h4>
-                        {pokemon.abilities.map((ability, idx) => {
-                            return <p key={idx}>{ability.ability.name}, </p>
+                <CardDiv>
+                    <CardTitle>
+                        <CardH2>{pokemon.name}</CardH2>
+                        {pokemon.types.map((type,idx) => {
+                            return <CardTitleP key={idx}>{type.type.name}</CardTitleP>
                         })}
-                    </div>
+                    </CardTitle>
+                    <CardAbilitiesDiv>
+                        <CardH4>Abilities</CardH4>
+                        {pokemon.abilities.map((ability, idx) => {
+                            return <CardAbilitiesP key={idx}>{ability.ability.name}</CardAbilitiesP>
+                        })}
+                    </CardAbilitiesDiv>
                     <div>
-                        <h4>Stats</h4>
+                        <CardH4>Stats</CardH4>
                         {pokemon.stats.map((stat, idx) => {
                             return (
-                                <p key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</p>
+                                <CardStatsP key={idx}>{stat.stat.name}: base - {stat.base_stat} effort - {stat.effort}</CardStatsP>
                             )
                         })}
                     </div>
-                </div>}
-            {errors.length > 0 && <p>{errors}</p>}
-        </div>
+                </CardDiv>}
+                <Section>
+                    {loading && <Loading>loading pokemon...</Loading>}
+                    {errors.length > 0 && <Error>{errors}</Error>}
+                </Section>
+        </>
     )
 }
 
