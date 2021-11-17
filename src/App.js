@@ -3,6 +3,17 @@ import axios from 'axios';
 import Card from './components/Card';
 import Form from './components/Form';
 import './App.css';
+import styled from 'styled-components';
+import {Loading, Error} from './utils/styled'
+
+const H1 = styled.h1`
+  font-size: 3rem;
+  color: ${pr => pr.theme.primaryColor};
+  text-align: center;
+`
+const Div = styled.div`
+  background-color: ${pr => pr.theme.secondaryColor};
+`
 
 function App() {
   const [data, setData] = useState([])
@@ -22,13 +33,13 @@ function App() {
   }, [])
 
   if(error.length > 0){
-    return <h1>{error}</h1>
+    return <Error>{error}</Error>
   }
 
   return (
-    <div> 
-      <h1>Northwestern Mutual Coding Challenge - Michael Quint</h1>
-      {loading ? <p>loading....</p>
+    <Div> 
+      <H1>Northwestern Mutual Coding Challenge - Michael Quint</H1>
+      {loading ? <Loading>loading....</Loading>
         : <div>
           <Form />
           {data.results.map((pokemon, idx) => {
@@ -36,8 +47,7 @@ function App() {
           })}
         </div>
       }
-      
-    </div>
+    </Div>
   );
 }
 
